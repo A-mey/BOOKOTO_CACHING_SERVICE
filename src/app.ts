@@ -97,11 +97,17 @@ app.use(helmet());
 // app.use(validationErrorMiddleware);
 
 
-server.listen(port, () => {
+server.listen(port, async () => {
     routes.forEach((route: CommonRoutesConfig) => {
         debugLog(`Routes configured for ${route.getName()}`);
     });
-    AerospikeService.connect();
+    // (async() => {
+    //     await AerospikeService.connect();
+    //     await AerospikeService.insert();
+    // })
+    await AerospikeService.connect();
+    await AerospikeService.insert();
+    await AerospikeService.read();
     // our only exception to avoiding console.log(), because we
     // always want to know when the server is done starting up
     console.log(runningMessage);
