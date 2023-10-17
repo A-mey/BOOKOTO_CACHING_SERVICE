@@ -7,12 +7,14 @@ export class SessionRoutes extends CommonRoutesConfig {
     constructor(app: express.Application) {
         super(app, 'UserRoutes');
     }
+    
     configureRoutes() {
 
-        this.app.use('/createNewSession')
+        this.app.route(`/addSession`)
             .post(
-                // SessionController.addSession
-            )
+                SessionController.addSession
+            );
         return this.app;
     }
+    
 }

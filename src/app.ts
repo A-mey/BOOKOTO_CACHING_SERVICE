@@ -12,6 +12,7 @@ import cors from 'cors';
 import {CommonRoutesConfig} from './common/common.routes.config';
 import {SessionRoutes} from './session/routes/session.routes.config';
 import { NotFoundRoutes } from './common/error/notFound/routes/notFound.error.routes.config';
+import AerospikeService from './common/services/aerospike/aerospike.service';
 import debug from 'debug';
 import helmet from 'helmet';
 
@@ -100,6 +101,7 @@ server.listen(port, () => {
     routes.forEach((route: CommonRoutesConfig) => {
         debugLog(`Routes configured for ${route.getName()}`);
     });
+    AerospikeService.connect();
     // our only exception to avoiding console.log(), because we
     // always want to know when the server is done starting up
     console.log(runningMessage);
