@@ -1,6 +1,6 @@
 import express from 'express';
 import { CommonRoutesConfig } from '../../../common.routes.config';
-import NotFoundController from "../controllers/404.error.controllers"
+import NotFoundController from "../controllers/notFound.error.controllers"
 
 
 export class NotFoundRoutes extends CommonRoutesConfig {

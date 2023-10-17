@@ -10,11 +10,8 @@ import * as winston from 'winston';
 import * as expressWinston from 'express-winston';
 import cors from 'cors';
 import {CommonRoutesConfig} from './common/common.routes.config';
-import {LoginRoutes} from './session/routes/login.routes.config';
-import { NotFoundRoutes } from './common/error/404/routes/404.error.routes.config';
-// import { SipSQL } from './common/services/DAL/sql.service.sip';
-// import { SQLService } from './common/services/DAL/sql.service';
-// import {validationErrorMiddleware} from './common/error/validationErrorMiddleware.error';
+import {SessionRoutes} from './session/routes/session.routes.config';
+import { NotFoundRoutes } from './common/error/notFound/routes/notFound.error.routes.config';
 import debug from 'debug';
 import helmet from 'helmet';
 
@@ -75,7 +72,7 @@ app.use(expressWinston.logger(loggerOptions));
 
 // here we are adding the UserRoutes to our array,
 // after sending the Express.js application object to have the routes added to our app!
-routes.push(new LoginRoutes(app));
+routes.push(new SessionRoutes(app));
 routes.push(new NotFoundRoutes(app));
 
 app.use(expressWinston.errorLogger({
