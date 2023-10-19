@@ -43,6 +43,7 @@
     "dotenv": "^16.0.3",
     "eslint": "^8.47.0",
     "http-status-codes": "^2.2.0",
+    "kafkajs": "^2.2.4",
     "mocha": "^10.2.0",
     "nodemon": "^2.0.20",
     "source-map-support": "^0.5.21",

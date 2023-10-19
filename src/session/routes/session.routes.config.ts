@@ -10,10 +10,14 @@ export class SessionRoutes extends CommonRoutesConfig {
     
     configureRoutes() {
 
-        this.app.route(`/addSession`)
+        this.app.route('/addSession')
             .post(
                 SessionController.addSession
             );
+        this.app.route('/updateSession')
+            .post(
+                SessionController.updateSession
+            )
         return this.app;
     }
     
