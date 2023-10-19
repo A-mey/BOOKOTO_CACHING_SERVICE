@@ -9,7 +9,7 @@ class SessionController {
     
     addSession = async (req: express.Request, res: express.Response) => {
         const sessionId = await createNewId();
-        const sessionData = req.body.sessionData;
+        const sessionData = req.body.SESSIONDATA;
         const createSessionResponse = await SessionService.createSession(sessionId, sessionData);
         let response: Response;
         if (createSessionResponse) {
@@ -22,13 +22,22 @@ class SessionController {
 
     updateSession = async (req: express.Request, res: express.Response) => {
         const sessionId = req.body.SESSIONID;
-        const sessionData = req.body.sessionData;
-        const updateSessionResponse = await SessionService.createSession(sessionId, sessionData); 
+        const sessionData = req.body.SESSIONDATA;
+        const doesSessionExist = await SessionService.checkSession(sessionId); 
         let response: Response;
-        if (updateSessionResponse) {
-            response = {success: true, code: 200, data: {message: "session updated successfully"}};
+        response = {success: true, code: 200, data: {message: "session updated successfully"}};
+        if (doesSessionExist) {
+            const updateSession = await SessionService.updateSession(sessionId, sessionData);
+            if (!updateSession) {
+                response = {success: false, code: 500, data: {message: "something went wrong"}};
+            }
+            // response = {success: true, code: 200, data: {message: "session updated successfully"}};
         } else {
-            response = {success: false, code: 500, data: {message: "something went wrong"}};
+            const newSessionId = await createNewId();
+            const newSessionResponse = await SessionService.createSession(newSessionId, sessionData);
+            if (!newSessionResponse) {
+                response = {success: false, code: 500, data: {message: "something went wrong"}};
+            }
         }
         res.status(response.code).json(response);
     }

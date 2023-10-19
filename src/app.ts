@@ -12,7 +12,7 @@ import cors from 'cors';
 import {CommonRoutesConfig} from './common/common.routes.config';
 import {SessionRoutes} from './session/routes/session.routes.config';
 import { NotFoundRoutes } from './common/error/notFound/routes/notFound.error.routes.config';
-import AerospikeService from './common/services/aerospike/aerospike.service';
+// import AerospikeService from './common/services/aerospike/aerospike.service';
 import debug from 'debug';
 import helmet from 'helmet';
 
@@ -105,9 +105,9 @@ server.listen(port, async () => {
     //     await AerospikeService.connect();
     //     await AerospikeService.insert();
     // })
-    await AerospikeService.connect();
-    await AerospikeService.insert();
-    await AerospikeService.read();
+    // await AerospikeService.connect();
+    // await AerospikeService.insert();
+    // await AerospikeService.read();
     // our only exception to avoiding console.log(), because we
     // always want to know when the server is done starting up
     console.log(runningMessage);

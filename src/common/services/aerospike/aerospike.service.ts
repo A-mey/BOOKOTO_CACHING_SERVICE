@@ -6,9 +6,13 @@ export class AerospikeService {
         hosts: 'localhost:3000',
     };
 
-    client: import("client");
+    client: import("client") | undefined;
 
     constructor() {
-        this.client = Aerospike.client(this.config);
+        this.connectAerospike();
+    }
+
+    connectAerospike = async () => {
+        this.client = await Aerospike.connect(this.config);
     }
 }

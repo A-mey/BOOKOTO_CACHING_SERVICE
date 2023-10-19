@@ -13,7 +13,7 @@ class SessionDAO {
             await Aero.insert(key, sessionData);
             response = true;
         } catch (e: unknown) {
-            console.log(await catchError)
+            console.log(await catchError(e))
         }
         return response;   
     }
@@ -25,7 +25,7 @@ class SessionDAO {
             await Aero.update(key, sessionData);
             response = true;
         } catch (e: unknown) {
-            console.log(await catchError)
+            console.log(await catchError(e))
         }
         return response;   
     }
@@ -34,10 +34,12 @@ class SessionDAO {
         let response;
         try {
             const key = await Aero.getKey(this.nameSpace, this.sessionSet, sessionId)
-            const sessionDetails = await Aero.read(key, ['pk']);
-            response = sessionDetails? sessionDetails: response;
+            const primarySession = await Aero.read(key);
+            console.log(primarySession, "primarySession");
+            // response = sessionDetails? sessionDetails: response;
+            response = primarySession;
         } catch (e: unknown) {
-            console.log(await catchError);
+            console.log(await catchError(e));
         }
         return response;
     }

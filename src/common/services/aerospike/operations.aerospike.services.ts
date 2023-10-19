@@ -8,22 +8,22 @@ class AeroOperation extends AerospikeService{
     }
 
     insert = async (key: Key, bins: object): Promise<void> => {
-        await this.client.put(key, bins);
+        await this.client!.put(key, bins);
     }
 
     update = async (key: Key, bins: object): Promise<void> => {
         // policy.exists = Aerospike.policy.exists.UPDATE;
-        await this.client.put(key, bins);
+        await this.client!.put(key, bins);
     }
 
     read = async (key: Key, binData?: Array<string>): Promise<object> => {
         let response;
         let record;
         if (binData && binData.length) {
-            record = await this.client.select(key, binData);
+            record = await this.client!.select(key, binData);
         }
         else {
-            record = await this.client.get(key);
+            record = await this.client!.get(key);
         }
         if (record && record.bins) {
             response = record.bins;
