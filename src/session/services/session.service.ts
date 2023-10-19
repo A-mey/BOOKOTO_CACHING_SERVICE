@@ -7,10 +7,10 @@ class SessionService {
     }
 
     checkSession = async (sessionId: string) => {
-        let response = false
-        const session = await SessionDao.getSession(sessionId);
-        response = session? true : false;
-        return response;
+        // let response = false
+        const sessionExists = await SessionDao.checkSession(sessionId);
+        // response = session? true : false;
+        return sessionExists;
     }
 
     updateSession = async (sessionId: string, sessionData: object) => {

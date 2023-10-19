@@ -43,6 +43,19 @@ class SessionDAO {
         }
         return response;
     }
+
+    checkSession = async (sessionId: string) => {
+        let response = false;
+        try {
+            const key = await Aero.getKey(this.nameSpace, this.sessionSet, sessionId);
+            const sessionExists = await Aero.check(key);
+            console.log(sessionExists, "sessionExists");
+            response = sessionExists;
+        } catch (e: unknown) {
+            console.log(await catchError(e));
+        }
+        return response;
+    }
 }
 
 export default new SessionDAO()

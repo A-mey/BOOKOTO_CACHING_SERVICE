@@ -35,6 +35,10 @@ class AeroOperation extends AerospikeService{
         return new Key(nameSpace, set, primaryKey);
     }
 
+    check = async (key: Key): Promise<boolean> => {
+        return this.client?.exists(key);
+    }
+
 }
 
 export default new AeroOperation()
