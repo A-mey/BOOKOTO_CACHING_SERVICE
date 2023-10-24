@@ -2,18 +2,19 @@ import express from 'express';
 import SessionService from '../services/session.service';
 import { createNewId } from '../../common/helpers/createId.helper';
 import { Response } from '../../common/types/response.types';
+import { getCurrentDateTime } from '../../common/helpers/currentDateTime.helper';
 
 class SessionController {
 
     constructor() {}
     
-    addSession = async (req: express.Request, res: express.Response) => {
+    addSession = async (_req: express.Request, res: express.Response) => {
         const sessionId = await createNewId();
-        // let sessionData = req.body.SESSIONDATA;
         const sessionData = {
-            time: new Date(),
+            time: await getCurrentDateTime(),
             isLoggedIn: 0
         }
+        console.log(sessionData, "sessionData");
         const createSessionResponse = await SessionService.createSession(sessionId, sessionData);
         let response: Response;
         if (createSessionResponse) {

@@ -1,5 +1,5 @@
-import { NextFunction } from "express";
+import { Request, Response, NextFunction } from "express";
 
 export interface CommonSchemaValidator{
-    checkSchema(req: Express.Request, res: Express.Request, next: NextFunction): Promise<void>;
+    checkSchema(req: Request, res: Response, next: NextFunction): Promise<void>;
 }

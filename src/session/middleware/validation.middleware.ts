@@ -1,4 +1,4 @@
-import express, { NextFunction, Request } from "express";
+import express, { NextFunction } from "express";
 import SessionSchema from "../schema/session.schema";
 // import validateSchemaServices from "../../common/services/validateSchema.services";
 import ValidateSchema from "../../common/services/schema/validate.schema"
@@ -9,7 +9,7 @@ import { errorMessageObject } from '../../common/types/errorMsgObject.types';
 
 class SessionValidationMiddleware implements CommonSchemaValidator{
     
-    checkSchema = async (req: Request, res: express.Response, next: NextFunction) => {
+    checkSchema = async (req: express.Request, res: express.Response, next: NextFunction) => {
         const origin: (keyof typeof SessionSchema.schema) = req.originalUrl.replace("/", "") as (keyof typeof SessionSchema.schema);
         const schema = SessionSchema.schema[origin];
         const validateSchemaFn = await compileSchema.compile(schema)
