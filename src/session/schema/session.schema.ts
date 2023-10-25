@@ -10,7 +10,9 @@ class SessionSchema {
             "required": ["SESSIONDATA", "SESSIONID"],
             "properties" : {
                 "SESSIONID": {
-                    "type": "string"
+                    "type": "string",
+                    "minlength": 11,
+                    "maxlength": 11
                 },
                 "SESSIONDATA": {
                     "type": "object",
@@ -24,7 +26,9 @@ class SessionSchema {
             "required": ["SESSIONID"],
             "properties" : {
                 "SESSIONID": {
-                    "type": "object",
+                    "type": "string",
+                    "minlength": 11,
+                    "maxlength": 11
                 }
             },
         },        
