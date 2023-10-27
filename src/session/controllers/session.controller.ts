@@ -12,6 +12,7 @@ class SessionController {
         const sessionId = await createNewId();
         const sessionData = {
             time: await getCurrentDateTime(),
+            sessionId: sessionId,
             isLoggedIn: 0
         }
         console.log(sessionData, "sessionData");
@@ -40,7 +41,7 @@ class SessionController {
             const newSessionId = await createNewId();
             const newSessionResponse = await SessionService.createSession(newSessionId, sessionData);
             if (!newSessionResponse) {
-                response = {success: false, code: 500, data: {message: "something went wrong"}};
+                response = {success: false, code: 500, data: {message: "session not found"}};
             }
         }
         res.status(response.code).json(response);
