@@ -22,6 +22,7 @@ export class SessionRoutes extends CommonRoutesConfig {
         this.app.route('/updateSession')
             .post(
                 SessionValidationMiddleware.checkSchema,
+                sessionMiddleware.validateSession,
                 SessionController.updateSession
             )
         this.app.route('/validateSession')

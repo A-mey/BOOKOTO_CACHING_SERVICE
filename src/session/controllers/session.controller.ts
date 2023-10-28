@@ -12,14 +12,14 @@ class SessionController {
         const sessionId = await createNewId();
         const sessionData = {
             time: await getCurrentDateTime(),
-            sessionId: sessionId,
-            isLoggedIn: 0
+            SESSIONID: sessionId,
+            ISLOGGEDIN: 0
         }
         console.log(sessionData, "sessionData");
         const createSessionResponse = await SessionService.createSession(sessionId, sessionData);
         let response: Response;
         if (createSessionResponse) {
-            response = {success: true, code: 200, data: {message: "session created successfully", data: {SESSIONID: sessionId}}};
+            response = {success: true, code: 200, data: {message: "session created successfully", data: {TYPE: 0, sessionId: sessionId}}};
         } else {
             response = {success: false, code: 500, data: {message: "something went wrong"}};
         }
@@ -29,20 +29,11 @@ class SessionController {
     updateSession = async (req: express.Request, res: express.Response) => {
         const sessionId = req.body.SESSIONID;
         const sessionData = req.body.SESSIONDATA;
-        const doesSessionExist = await SessionService.checkSession(sessionId);
         let response: Response;
         response = {success: true, code: 200, data: {message: "session updated successfully"}};
-        if (doesSessionExist) {
-            const updateSession = await SessionService.updateSession(sessionId, sessionData);
-            if (!updateSession) {
-                response = {success: false, code: 500, data: {message: "something went wrong"}};
-            }
-        } else {
-            const newSessionId = await createNewId();
-            const newSessionResponse = await SessionService.createSession(newSessionId, sessionData);
-            if (!newSessionResponse) {
-                response = {success: false, code: 500, data: {message: "session not found"}};
-            }
+        const updateSession = await SessionService.updateSession(sessionId, sessionData);
+        if (!updateSession) {
+            response = {success: false, code: 500, data: {message: "something went wrong"}};
         }
         res.status(response.code).json(response);
     }    

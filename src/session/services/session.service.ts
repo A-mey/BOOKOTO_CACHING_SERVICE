@@ -1,4 +1,5 @@
 import SessionDao from "../dao/session.dao";
+import { user } from "../types/user.session.type";
 
 class SessionService {
     createSession = async (sessionId: string, sessionData: object): Promise<unknown> => {
@@ -13,8 +14,14 @@ class SessionService {
         return sessionExists;
     }
 
-    updateSession = async (sessionId: string, sessionData: object) => {
+    updateSession = async (sessionId: string, sessionData: user) => {
+        sessionData.ISLOGGEDIN = 1;
         const response = await SessionDao.updateSession(sessionId, sessionData);
+        return response;
+    }
+
+    getSessionData = async (sessionId: string) => {
+        const response = await SessionDao.getSession(sessionId);
         return response;
     }
 }

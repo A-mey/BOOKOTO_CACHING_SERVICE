@@ -25,7 +25,7 @@ class SessionDAO {
             await Aero.update(key, sessionData);
             response = true;
         } catch (e: unknown) {
-            console.log(await catchError(e))
+            console.log("updateSession", await catchError(e))
         }
         return response;   
     }
