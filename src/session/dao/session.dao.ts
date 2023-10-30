@@ -15,7 +15,7 @@ class SessionDAO {
         } catch (e: unknown) {
             console.log(await catchError(e))
         }
-        return response;   
+        return response;
     }
 
     updateSession = async (sessionId: string, sessionData: object) : Promise<boolean>  => {
