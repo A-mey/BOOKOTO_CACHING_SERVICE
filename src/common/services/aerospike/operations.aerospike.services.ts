@@ -1,5 +1,5 @@
 import { AerospikeService } from "./aerospike.service";
-import Aerospike, { Key, policy } from "aerospike";
+import { Key } from "aerospike";
 
 class AeroOperation extends AerospikeService{
 
@@ -17,7 +17,6 @@ class AeroOperation extends AerospikeService{
     }
 
     read = async (key: Key, binData?: Array<string>): Promise<object> => {
-        let response;
         let record;
         if (binData && binData.length) {
             record = await this.client!.select(key, binData);
@@ -25,9 +24,10 @@ class AeroOperation extends AerospikeService{
         else {
             record = await this.client!.get(key);
         }
-        if (record && record.bins) {
-            response = record.bins;
+        if (!record || !record .bins) {
+            throw new Error();
         }
+        const response = record.bins;
         return response;
     }
 

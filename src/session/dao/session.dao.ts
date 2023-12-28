@@ -1,47 +1,41 @@
 import { catchError } from "../../common/helpers/catch.helper";
 import Aero from "../../common/services/aerospike/operations.aerospike.services"
+import { SessionDaoInterface } from "../interfaces/session.dao.interface";
 
-class SessionDAO {
+export class SessionDAO implements SessionDaoInterface {
 
     private nameSpace: string = process.env.NAMESPACE!;
     private sessionSet: string = process.env.SESSION_SET!;
 
-    insertSession = async (sessionId: string, sessionData: object) : Promise<boolean>  => {
-        let response = false;
+    insertSession = async (sessionId: string, sessionData: object) : Promise<void>  => {
         try {
             const key = await Aero.getKey(this.nameSpace, this.sessionSet, sessionId)
             await Aero.insert(key, sessionData);
-            response = true;
-        } catch (e: unknown) {
-            console.log(await catchError(e))
+        } catch (error: unknown) {
+            const errorMsg = await catchError(error);
+            throw new Error(errorMsg);
         }
-        return response;   
     }
 
-    updateSession = async (sessionId: string, sessionData: object) : Promise<boolean>  => {
-        let response = false;
+    updateSession = async (sessionId: string, sessionData: object) : Promise<void>  => {
         try {
             const key = await Aero.getKey(this.nameSpace, this.sessionSet, sessionId)
             await Aero.update(key, sessionData);
-            response = true;
-        } catch (e: unknown) {
-            console.log("updateSession", await catchError(e))
+        } catch (error: unknown) {
+            const errorMsg = await catchError(error);
+            throw new Error(errorMsg);
         }
-        return response;   
     }
 
     getSession = async (sessionId: string) => {
-        let response;
         try {
             const key = await Aero.getKey(this.nameSpace, this.sessionSet, sessionId)
             const primarySession = await Aero.read(key);
             console.log(primarySession, "primarySession");
-            // response = sessionDetails? sessionDetails: response;
-            response = primarySession;
+            return primarySession;
         } catch (e: unknown) {
-            console.log(await catchError(e));
+            throw new Error();
         }
-        return response;
     }
 
     checkSession = async (sessionId: string) => {

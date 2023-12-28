@@ -12,14 +12,19 @@ class SessionValidationMiddleware implements CommonSchemaValidator{
     checkSchema = async (req: express.Request, res: express.Response, next: NextFunction) => {
         const origin: (keyof typeof SessionSchema.schema) = req.originalUrl.replace("/", "") as (keyof typeof SessionSchema.schema);
         const schema = SessionSchema.schema[origin];
-        const validateSchemaFn = await compileSchema.compile(schema)
-        const errorRes: errorMessageObject =  await ValidateSchema.validateSchema(req.body, validateSchemaFn);
-        if (errorRes.isValid) {
+        if (schema) {
+            const validateSchemaFn = await compileSchema.compile(schema)
+            const errorRes: errorMessageObject =  await ValidateSchema.validateSchema(req.body, validateSchemaFn);
+            if (errorRes.isValid) {
+                next();
+              } else {
+                const response: Response = {success: false, code: 400, data: {message: errorRes.errorMsg}}
+                res.status(400).json(response);
+            }
+        } else {
             next();
-          } else {
-            const response: Response = {success: false, code: 400, data: {message: errorRes.errorMsg}}
-            res.status(400).json(response);
         }
+        
     }
 }
 

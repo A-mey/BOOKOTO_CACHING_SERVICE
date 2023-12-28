@@ -6,14 +6,17 @@ import sessionMiddleware from "../middleware/session.middleware";
 import sessionController from "../controllers/session.controller";
 
 
-export class SessionRoutes extends CommonRoutesConfig {
+export class SessionRoutes implements CommonRoutesConfig {
+    private name = "SessionRoutes";
+    app: express.Application;
+
     constructor(app: express.Application) {
-        super(app, 'UserRoutes');
+        this.app = app;
     }
     
     configureRoutes() {
 
-        // this.app.use(SessionValidationMiddleware.checkSchema);
+        this.app.use(SessionValidationMiddleware.checkSchema);
 
         this.app.route('/addSession')
             .get(
@@ -21,16 +24,18 @@ export class SessionRoutes extends CommonRoutesConfig {
             );
         this.app.route('/updateSession')
             .post(
-                SessionValidationMiddleware.checkSchema,
                 sessionMiddleware.validateSession,
                 SessionController.updateSession
             )
-        this.app.route('/validateSession')
+        this.app.route('/getSessionData')
             .post(
-                SessionValidationMiddleware.checkSchema,
                 sessionMiddleware.validateSession,
                 sessionController.addSession
             )
         return this.app;
+    }
+
+    getName(): string {
+        return this.name;
     }
 }
