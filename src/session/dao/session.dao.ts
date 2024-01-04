@@ -1,55 +1,68 @@
 import { catchError } from "../../common/helpers/catch.helper";
 import Aero from "../../common/services/aerospike/operations.aerospike.services"
+import logFactoryService from "../../common/services/logger/log.factory.service";
+import { LogService } from "../../common/services/logger/log.service";
 import { ISessionDaoInterface } from "../interfaces/ISession.dao.interface";
 
 export class SessionDAO implements ISessionDaoInterface {
 
     private nameSpace: string = process.env.NAMESPACE!;
     private sessionSet: string = process.env.SESSION_SET!;
+    logger: LogService;
+
+    constructor () {
+        this.logger = new LogService("SessionDAO");
+    }
 
     insertSession = async (sessionId: string, sessionData: object) : Promise<void>  => {
+        const logger = await logFactoryService.getLog(this.logger, "insertSession");
         try {
             const key = await Aero.getKey(this.nameSpace, this.sessionSet, sessionId)
             await Aero.insert(key, sessionData);
         } catch (error: unknown) {
             const errorMsg = await catchError(error);
+            logger.log("error", errorMsg)
             throw new Error(errorMsg);
         }
     }
 
     updateSession = async (sessionId: string, sessionData: object) : Promise<void>  => {
+        const logger = await logFactoryService.getLog(this.logger, "updateSession");
         try {
             const key = await Aero.getKey(this.nameSpace, this.sessionSet, sessionId)
             await Aero.update(key, sessionData);
         } catch (error: unknown) {
             const errorMsg = await catchError(error);
+            logger.log("error", errorMsg)
             throw new Error(errorMsg);
         }
     }
 
-    getSession = async (sessionId: string) => {
+    getSession = async (sessionId: string) : Promise<object> => {
+        const logger = await logFactoryService.getLog(this.logger, "getSession");
         try {
             const key = await Aero.getKey(this.nameSpace, this.sessionSet, sessionId)
             const primarySession = await Aero.read(key);
-            console.log(primarySession, "primarySession");
+            logger.log("primarySession", primarySession);
             return primarySession;
-        } catch (e: unknown) {
-            throw new Error();
+        } catch (error: unknown) {
+            const errorMsg = await catchError(error);
+            logger.log("error", errorMsg)
+            throw new Error(errorMsg);
         }
     }
 
-    checkSession = async (sessionId: string) => {
-        let response = false;
+    checkSession = async (sessionId: string) : Promise<boolean> => {
+        const logger = await logFactoryService.getLog(this.logger, "checkSession");
         try {
             const key = await Aero.getKey(this.nameSpace, this.sessionSet, sessionId);
-            const sessionExists = await Aero.check(key);
-            console.log(sessionExists, "sessionExists");
-            response = sessionExists;
-        } catch (e: unknown) {
-            console.log(await catchError(e));
+            const doesSessionExist = await Aero.check(key);
+            logger.log("sessionExists", doesSessionExist);
+            return doesSessionExist;
+        } catch (error: unknown) {
+            const errorMsg = await catchError(error);
+            logger.log("error", errorMsg)
+            throw new Error(errorMsg);
         }
-        return response;
     }
 }
-
-export default new SessionDAO()
