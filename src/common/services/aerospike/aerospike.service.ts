@@ -6,10 +6,18 @@ export class AerospikeService {
         hosts: 'localhost:3000',
     };
 
-    client: import("client") | undefined;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    client: any;
 
     constructor() {
         this.connectAerospike();
+    }
+
+    getClient = () => {
+        if (!this.client) {
+            throw new Error("Aerospike error");
+        }
+        return this.client;
     }
 
     connectAerospike = async () => {

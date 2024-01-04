@@ -1,12 +1,18 @@
 import { catchError } from "../../common/helpers/catch.helper";
-import SessionDao from "../dao/session.dao";
-import { SessionServiceInterface } from "../interfaces/session.service.interface";
+import { SessionDAO } from "../dao/session.dao";
+import { ISessionServiceInterface } from "../interfaces/ISession.service.interface";
 import { user } from "../types/user.session.type";
 
-class SessionService implements SessionServiceInterface {
+export class SessionService implements ISessionServiceInterface {
+    sessionDao: SessionDAO;
+
+    constructor (sessionDao: SessionDAO) {
+        this.sessionDao = sessionDao;
+    }
+
     createSession = async (sessionId: string, sessionData: object): Promise<void> => {
         try {
-            await SessionDao.insertSession(sessionId, sessionData);
+            await this.sessionDao.insertSession(sessionId, sessionData);
         } catch (error: unknown) {
             const errorMsg = await catchError(error);
             throw new Error(errorMsg);
@@ -15,7 +21,7 @@ class SessionService implements SessionServiceInterface {
 
     checkSession = async (sessionId: string) : Promise<boolean> => {
         try {
-            const sessionExists = await SessionDao.checkSession(sessionId);
+            const sessionExists = await this.sessionDao.checkSession(sessionId);
             return sessionExists;
         } catch (error: unknown) {
             const errorMsg = await catchError(error);
@@ -27,7 +33,7 @@ class SessionService implements SessionServiceInterface {
     updateSession = async (sessionId: string, sessionData: user) : Promise<void> => {
         try {
             sessionData.ISLOGGEDIN = 1;
-            await SessionDao.updateSession(sessionId, sessionData);
+            await this.sessionDao.updateSession(sessionId, sessionData);
         } catch (error: unknown) {
             const errorMsg = await catchError(error);
             throw new Error(errorMsg);
@@ -35,9 +41,7 @@ class SessionService implements SessionServiceInterface {
     }
 
     getSessionData = async (sessionId: string) : Promise<object> => {
-        const response = await SessionDao.getSession(sessionId);
+        const response = await this.sessionDao.getSession(sessionId);
         return response;
     }
 }
-
-export default new SessionService();

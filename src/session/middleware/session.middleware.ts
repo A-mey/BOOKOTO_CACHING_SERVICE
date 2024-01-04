@@ -1,15 +1,21 @@
 import express from 'express';
-import SessionService from '../services/session.service';
+import { SessionService } from '../services/session.service';
 import { Response } from '../../common/types/response.types';
 
 // const log: debug.IDebugger = debug('app:users-controller');
-class SessionMiddleware {
+export class SessionMiddleware {
+    sessionService: SessionService;
+
+    constructor (sessionService: SessionService) {
+        this.sessionService = sessionService;
+    }
+
     validateSession = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
         const sessionId = req.body.SESSIONID;
-        const sessionIdExists = await SessionService.checkSession(sessionId);
+        const sessionIdExists = await this.sessionService.checkSession(sessionId);
         if (req.originalUrl === "/validateSession") {
             if (sessionIdExists === true) {
-                const sessionData = await SessionService.getSessionData(sessionId);
+                const sessionData = await this.sessionService.getSessionData(sessionId);
                 const response: Response = {success: true, code: 200, data: {message: "Session is valid", data: {TYPE: 1, sessionId: sessionId, sessionData: sessionData}}};
                 res.status(response.code).json(response);
             } else {
@@ -27,4 +33,4 @@ class SessionMiddleware {
     }
 }
 
-export default new SessionMiddleware();
+// export default new SessionMiddleware();

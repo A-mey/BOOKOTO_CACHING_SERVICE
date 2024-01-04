@@ -1,36 +1,41 @@
 import { CommonRoutesConfig } from "../../common/common.routes.config";
-import SessionController from '../controllers/session.controller';
 import express from 'express';
-import SessionValidationMiddleware from "../middleware/validation.middleware"
-import sessionMiddleware from "../middleware/session.middleware";
-import sessionController from "../controllers/session.controller";
+import { BodyValidationMiddleware } from "../../common/middleware/body.validation.middleware"
+import { SessionMiddleware } from "../middleware/session.middleware";
+import { SessionController } from "../controllers/session.controller";
 
 
 export class SessionRoutes implements CommonRoutesConfig {
     private name = "SessionRoutes";
     app: express.Application;
+    sessionController: SessionController;
+    sessionMiddleware: SessionMiddleware;
+    bodyValidationMiddleware: BodyValidationMiddleware;
 
-    constructor(app: express.Application) {
+    constructor(app: express.Application, sessionController: SessionController, sessionMiddleware: SessionMiddleware, bodyValidationMiddleware: BodyValidationMiddleware ) {
         this.app = app;
+        this.sessionController = sessionController;
+        this.sessionMiddleware = sessionMiddleware;
+        this.bodyValidationMiddleware = bodyValidationMiddleware;
     }
     
     configureRoutes() {
 
-        this.app.use(SessionValidationMiddleware.checkSchema);
+        this.app.use(this.bodyValidationMiddleware.checkSchema);
 
-        this.app.route('/addSession')
+        this.app.route('/session')
             .get(
-                SessionController.addSession
+                this.sessionController.addSession
             );
-        this.app.route('/updateSession')
-            .post(
-                sessionMiddleware.validateSession,
-                SessionController.updateSession
+        this.app.route('/session/update')
+            .patch(
+                this.sessionMiddleware.validateSession,
+                this.sessionController.updateSession
             )
         this.app.route('/getSessionData')
             .post(
-                sessionMiddleware.validateSession,
-                sessionController.addSession
+                this.sessionMiddleware.validateSession,
+                this.sessionController.addSession
             )
         return this.app;
     }

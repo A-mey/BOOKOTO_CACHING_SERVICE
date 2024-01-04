@@ -1,8 +1,8 @@
 import { catchError } from "../../common/helpers/catch.helper";
 import Aero from "../../common/services/aerospike/operations.aerospike.services"
-import { SessionDaoInterface } from "../interfaces/session.dao.interface";
+import { ISessionDaoInterface } from "../interfaces/ISession.dao.interface";
 
-export class SessionDAO implements SessionDaoInterface {
+export class SessionDAO implements ISessionDaoInterface {
 
     private nameSpace: string = process.env.NAMESPACE!;
     private sessionSet: string = process.env.SESSION_SET!;
