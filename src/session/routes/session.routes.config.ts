@@ -27,12 +27,12 @@ export class SessionRoutes implements CommonRoutesConfig {
             .get(
                 this.sessionController.addSession
             );
-        this.app.route('/session/update')
+        this.app.route('/session')
             .patch(
                 this.sessionMiddleware.validateSession,
                 this.sessionController.updateSession
             )
-        this.app.route('/getSessionData')
+        this.app.route('/session/data')
             .post(
                 this.sessionMiddleware.validateSession,
                 this.sessionController.addSession
