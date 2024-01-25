@@ -52,5 +52,25 @@ export class RabbitMQ {
         }
     };
 
+    getMessage = async (queue: string) => {
+        try {
+            await this.channel.consume(
+                queue,
+                (message: {content: unknown}) => {
+                  if (message && message.content) {
+                    console.log(
+                      " [x] Received '%s'",
+                      JSON.parse(message.content.toString())
+                    );
+                  }
+                },
+                { noAck: true }
+              );
+        } catch (error: unknown) {
+            const errorMsg = await catchError(error);
+            throw new Error(errorMsg);
+        }
+    }
+
 
 }
