@@ -21,8 +21,8 @@ export class RecentDAO implements IRecentDaoInterface {
             await Aero.insert(key, sessionData);
         } catch (error: unknown) {
             const errorMsg = await catchError(error);
-            logger.log("error", errorMsg)
-            throw new Error(errorMsg);
+            logger.error("error", errorMsg)
+            throw new Error(errorMsg.message);
         }
     }
 
@@ -33,8 +33,8 @@ export class RecentDAO implements IRecentDaoInterface {
             await Aero.update(key, sessionData);
         } catch (error: unknown) {
             const errorMsg = await catchError(error);
-            logger.log("error", errorMsg)
-            throw new Error(errorMsg);
+            logger.error("error", errorMsg)
+            throw new Error(errorMsg.message);
         }
     }
 
@@ -43,12 +43,12 @@ export class RecentDAO implements IRecentDaoInterface {
         try {
             const key = await Aero.getKey(this.nameSpace, this.sessionSet, sessionId)
             const primarySession = await Aero.read(key);
-            logger.log("primarySession", primarySession);
+            logger.info("primarySession", primarySession);
             return primarySession;
         } catch (error: unknown) {
             const errorMsg = await catchError(error);
-            logger.log("error", errorMsg)
-            throw new Error(errorMsg);
+            logger.error("error", errorMsg)
+            throw new Error(errorMsg.message);
         }
     }
 
@@ -57,12 +57,12 @@ export class RecentDAO implements IRecentDaoInterface {
         try {
             const key = await Aero.getKey(this.nameSpace, this.sessionSet, sessionId);
             const doesSessionExist = await Aero.check(key);
-            logger.log("sessionExists", doesSessionExist);
+            logger.info("sessionExists", doesSessionExist);
             return doesSessionExist;
         } catch (error: unknown) {
             const errorMsg = await catchError(error);
-            logger.log("error", errorMsg)
-            throw new Error(errorMsg);
+            logger.error("error", errorMsg)
+            throw new Error(errorMsg.message);
         }
     }
 }

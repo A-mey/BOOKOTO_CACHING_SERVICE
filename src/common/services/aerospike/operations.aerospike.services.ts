@@ -19,8 +19,8 @@ class AeroOperation extends AerospikeService {
             await this.client.put(key, bins);
         } catch (error: unknown) {
             const errorMsg = await catchError(error);
-            logger.log("error", errorMsg);
-            throw new Error()
+            logger.error("error", errorMsg);
+            throw new Error(errorMsg.message)
         }
     }
 
@@ -30,8 +30,8 @@ class AeroOperation extends AerospikeService {
             await this.client!.put(key, bins);
         } catch (error: unknown) {
             const errorMsg = await catchError(error);
-            logger.log("error", errorMsg);
-            throw new Error()
+            logger.error("error", errorMsg);
+            throw new Error(errorMsg.message)
         }
     }
 
@@ -51,8 +51,8 @@ class AeroOperation extends AerospikeService {
             return response;
         } catch (error: unknown) {
             const errorMsg = await catchError(error);
-            logger.log("error", errorMsg);
-            throw new Error()
+            logger.error("error", errorMsg);
+            throw new Error(errorMsg.message)
         }
     }
 
@@ -60,15 +60,15 @@ class AeroOperation extends AerospikeService {
         const logger = await logFactoryService.getLog(this.logger, "getKey");
         try {
             const key = new Key(nameSpace, set, primaryKey);
-            logger.log("key", key);
+            logger.info("key", key);
             if (!key) {
                 throw new Error("no key found");
             }
             return key;
         } catch (error: unknown) {
             const errorMsg = await catchError(error);
-            logger.log("error", errorMsg);
-            throw new Error()
+            logger.error("error", errorMsg);
+            throw new Error(errorMsg.message)
         }
     }
 
@@ -76,15 +76,15 @@ class AeroOperation extends AerospikeService {
         const logger = await logFactoryService.getLog(this.logger, "getKey");
         try {
             const doesKeyExists = this.client?.exists(key);
-            logger.log("doesKeyExists", doesKeyExists);
+            logger.info("doesKeyExists", doesKeyExists);
             if (doesKeyExists !== true || doesKeyExists !== false) {
                 throw new Error("exists error");
             }
             return doesKeyExists;
         } catch (error: unknown) {
             const errorMsg = await catchError(error);
-            logger.log("error", errorMsg);
-            throw new Error()
+            logger.error("error", errorMsg);
+            throw new Error(errorMsg.message)
         }
     }
 

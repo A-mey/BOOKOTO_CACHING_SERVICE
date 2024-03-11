@@ -33,7 +33,7 @@ export class SessionRoutes implements CommonRoutesConfig {
                 this.sessionController.updateSession
             )
         this.app.route('/session/data')
-            .post(
+            .put(
                 this.sessionMiddleware.validateSession,
                 this.sessionController.addSession
             )

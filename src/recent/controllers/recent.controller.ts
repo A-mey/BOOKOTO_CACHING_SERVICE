@@ -26,13 +26,13 @@ export class RecentController implements IRecentControllerInterface {
                 SESSIONID: sessionId,
                 ISLOGGEDIN: 0
             }
-            logger.log("sessionId", sessionId);
-            logger.log("sessionData", sessionData);
+            logger.info("sessionId", sessionId);
+            logger.info("sessionData", sessionData);
             await this.recentService.createSession(sessionId, sessionData);
             const response: Response = {success: true, code: 200, data: {message: "session created successfully", data: {TYPE: 0, sessionId: sessionId}}};
             res.status(response.code).json(response);
         } catch (error: unknown) {
-            logger.log("error", await catchError(error));
+            logger.error("error", await catchError(error));
             const response = {success: true, code: 500, data: {message: "Something went wrong"}};
             res.status(response.code).json(response);
         }   
@@ -43,13 +43,13 @@ export class RecentController implements IRecentControllerInterface {
         try {  
             const sessionId = req.body.SESSIONID;
             const sessionData = req.body.SESSIONDATA;
-            logger.log("sessionId", sessionId);
-            logger.log("sessionData", sessionData);
+            logger.info("sessionId", sessionId);
+            logger.info("sessionData", sessionData);
             await this.recentService.updateSession(sessionId, sessionData);
             const response = {success: true, code: 200, data: {message: "session updated successfully"}};
             res.status(response.code).json(response);
         } catch (error: unknown) {
-            logger.log("error", await catchError(error));
+            logger.error("error", await catchError(error));
             const response = {success: true, code: 500, data: {message: "Something went wrong"}};
             res.status(response.code).json(response);
         }

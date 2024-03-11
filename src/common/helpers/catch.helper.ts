@@ -1,8 +1,8 @@
-export const catchError = async (error: unknown) : Promise<string> => {
+export const catchError = async (error: unknown) : Promise<{message: string, stack?: string}> => {
     if (error instanceof Error) {
-        return error.message;
+        return {message: error.message, stack: error.stack};
     }
     else {
-        return String(error)
+        return {message: String(error)}
     }
 }

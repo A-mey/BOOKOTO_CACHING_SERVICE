@@ -20,8 +20,8 @@ export class RecentService implements IRecentServiceInterface {
             await this.recentDao.insertSession(sessionId, sessionData);
         } catch (error: unknown) {
             const errorMsg = await catchError(error);
-            logger.log("error", errorMsg);
-            throw new Error(errorMsg);
+            logger.error("error", errorMsg);
+            throw new Error(errorMsg.message);
         }
     }
 
@@ -32,8 +32,8 @@ export class RecentService implements IRecentServiceInterface {
             return sessionExists;
         } catch (error: unknown) {
             const errorMsg = await catchError(error);
-            logger.log("error", errorMsg);
-            throw new Error(errorMsg);
+            logger.error("error", errorMsg);
+            throw new Error(errorMsg.message);
         }  
         
     }
@@ -44,8 +44,8 @@ export class RecentService implements IRecentServiceInterface {
             await this.recentDao.updateSession(sessionId, sessionData);
         } catch (error: unknown) {
             const errorMsg = await catchError(error);
-            logger.log("error", errorMsg);
-            throw new Error(errorMsg);
+            logger.error("error", errorMsg);
+            throw new Error(errorMsg.message);
         }        
     }
 
@@ -53,12 +53,12 @@ export class RecentService implements IRecentServiceInterface {
         const logger = await logFactoryService.getLog(this.logger, "createSession");
         try {
             const sessionData = await this.recentDao.getSession(sessionId);
-            logger.log("sessionData", sessionData);
+            logger.info("sessionData", sessionData);
             return sessionData;
         } catch (error: unknown) {
             const errorMsg = await catchError(error);
-            logger.log("error", errorMsg);
-            throw new Error(errorMsg);
+            logger.error("error", errorMsg);
+            throw new Error(errorMsg.message);
         }   
     }
 }

@@ -10,11 +10,13 @@ import * as winston from 'winston';
 import * as expressWinston from 'express-winston';
 import cors from 'cors';
 import {CommonRoutesConfig} from './common/common.routes.config';
-import {SessionRoutes} from './session/routes/session.routes.config';
-import { NotFoundRoutes } from './common/error/notFound/routes/notFound.error.routes.config';
+// import {SessionRoutes} from './session/routes/session.routes.config';
+// import { NotFoundRoutes } from './common/error/notFound/routes/notFound.error.routes.config';
 // import AerospikeService from './common/services/aerospike/aerospike.service';
 import debug from 'debug';
 import helmet from 'helmet';
+import { sessionContainerService } from './container/routes/session/session.container';
+import { recentContainerService } from './container/routes/recent/recent.container';
 
 const app: express.Application = express();
 const server: http.Server = http.createServer(app);
@@ -73,8 +75,9 @@ app.use(expressWinston.logger(loggerOptions));
 
 // here we are adding the UserRoutes to our array,
 // after sending the Express.js application object to have the routes added to our app!
-routes.push(new SessionRoutes(app));
-routes.push(new NotFoundRoutes(app));
+routes.push(sessionContainerService(app));
+routes.push(recentContainerService(app));
+routes.push(recentContainerService(app));
 
 app.use(expressWinston.errorLogger({
     transports: [
