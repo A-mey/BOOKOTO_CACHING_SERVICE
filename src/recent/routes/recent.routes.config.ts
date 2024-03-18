@@ -20,16 +20,16 @@ export class RecentRoutes implements CommonRoutesConfig {
 
         this.app.use(this.bodyValidationMiddleware.checkSchema);
 
-        this.app.route('/session')
+        this.app.route('/recent/:id')
             .get(
                 this.recentController.addSession
             );
-        this.app.route('/session')
-            .patch(
+        this.app.route('/recent')
+            .put(
                 this.recentController.updateSession
             )
-        this.app.route('/session/data')
-            .post(
+        this.app.route('/recent')
+            .delete(
                 this.recentController.addSession
             )
         return this.app;
