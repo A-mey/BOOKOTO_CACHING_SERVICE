@@ -2,9 +2,9 @@ import { catchError } from "../../common/helpers/catch.helper";
 import Aero from "../../common/services/aerospike/operations.aerospike.services"
 import logFactoryService from "../../common/services/logger/log.factory.service";
 import { LogService } from "../../common/services/logger/log.service";
-import { IWishlistDaoInterface } from "../interfaces/IWishlist.dao.interface";
+import { IFavoritesDaoInterface } from "../interfaces/IFavorites.dao.interface";
 
-export class WishlistDao implements IWishlistDaoInterface {
+export class FavoritesDao implements IFavoritesDaoInterface {
 
     private nameSpace: string = process.env.NAMESPACE!;
     private sessionSet: string = process.env.SESSION_SET!;
